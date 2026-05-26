@@ -8,8 +8,8 @@ Actualmente estamos en la **Fase 1: Maquetación y Navegación Estática**.
 ## 📌 Enlaces de Contexto (Para uso con IA)
 Si utilizas ChatGPT, Claude o Gemini para ayudarte a generar el HTML/CSS, **debes proporcionarles los siguientes enlaces** para que la IA entienda el modelo de negocio, los campos de base de datos y la estructura del proyecto cliente:
 
-* **Repositorio Web Cliente (Spring Boot):** `[INSERTA_AQUI_URL_GIT_CLIENTE]`
-* **Repositorio Admin Actual (Electron):** `[INSERTA_AQUI_URL_GIT_ADMIN]`
+* **Repositorio Web Cliente (Spring Boot):** `https://github.com/YeahBaby666/ecowash.git`
+* **Repositorio Admin Actual (Electron):** `https://github.com/YeahBaby666/ecowash-admin-electron.git`
 
 **Prompt recomendado para la IA:** > *"Revisa el repositorio del cliente en Spring Boot para entender el modelo de datos de EcoWash (pedidos, estados, clientes). Luego, basándote en la estructura del repositorio Admin, genérame el HTML estático y el CSS para la vista de [nombre de la vista], respetando que no haya JavaScript de lógica de servidor. La navegación debe ser únicamente a través de etiquetas `<a href='vista.html'>`."*
 
