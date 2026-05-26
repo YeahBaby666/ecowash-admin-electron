@@ -1,0 +1,212 @@
+/* ==========================================================================
+   EcoWash Admin - Estilos Globales y Variables
+   ========================================================================== */
+:root {
+    --bg-primary: #f4f6f9;
+    --bg-sidebar: #1e293b;
+    --sidebar-hover: #334155;
+    --sidebar-active: #0ea5e9;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #ffffff;
+    --border-color: #e2e8f0;
+    
+    /* Paleta EcoWash */
+    --color-primary: #0284c7;
+    --color-primary-hover: #0369a1;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Layout - Sidebar (Menú Lateral)
+   ========================================================================== */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    padding: 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--sidebar-hover);
+}
+
+.sidebar-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--sidebar-active);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 16px 0;
+    flex-grow: 1;
+}
+
+/* Clases para guiar la navegación estática */
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu li a:hover {
+    background-color: var(--sidebar-hover);
+    color: var(--text-light);
+}
+
+.sidebar-menu li.active a {
+    background-color: var(--sidebar-hover);
+    color: var(--text-light);
+    border-left: 4px solid var(--sidebar-active);
+}
+
+/* ==========================================================================
+   Layout - Contenido Principal
+   ========================================================================== */
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.page-header h1 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Componentes - Tablas de Administración
+   ========================================================================== */
+.table-container {
+    background: var(--text-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th {
+    background-color: #f8fafc;
+    padding: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table td {
+    padding: 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* ==========================================================================
+   Componentes - Selects, Botones y Badges (Estados Estáticos)
+   ========================================================================== */
+.select-status {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    outline: none;
+}
+
+.select-status:focus {
+    border-color: var(--color-primary);
+}
+
+/* Botones de acción estándar */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--text-light);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* Badges de estado visuales para guiar el negocio de lavandería */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-pendiente { background-color: #fef3c7; color: #d97706; }
+.badge-lavado { background-color: #e0f2fe; color: #0284c7; }
+.badge-terminado { background-color: #d1fae5; color: #059669; }

@@ -2,37 +2,80 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoWash - Panel de Administración</title>
+    <title>EcoWash Admin - Panel Principal</title>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
+
     <div class="sidebar">
-        <h2>EcoWash Admin</h2>
-        <ul>
-            <li class="active">Pedidos Activos</li>
-            <li>Historial</li>
-            <li>Configuración</li>
+        <div class="sidebar-header">
+            <h2>EcoWash Admin</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="index.html">📦 Pedidos Activos</a>
+            </li>
+            <li>
+                <a href="inventario.html">🧪 Gestión de Insumos</a>
+            </li>
+            <li>
+                <a href="clientes.html">👥 Lista de Clientes</a>
+            </li>
         </ul>
     </div>
     
     <div class="main-content">
-        <h1>Gestión de Lavandería en Tiempo Real</h1>
+        <div class="page-header">
+            <h1>Monitoreo de Pedidos Activos</h1>
+            <span class="badge badge-lavado">Fase de Diseño Estático</span>
+        </div>
         
-        <table id="pedidosTable">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Cliente</th>
-                    <th>Servicio</th>
-                    <th>Estado Actual</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody id="pedidosBody">
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Orden</th>
+                        <th>Cliente</th>
+                        <th>Detalle Servicio</th>
+                        <th>Estado Lavandería</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>#1024</strong></td>
+                        <td>Aldo Martinez</td>
+                        <td>Lavado + Planchado (Terno)</td>
+                        <td>
+                            <select class="select-status">
+                                <option value="PENDIENTE">PENDIENTE</option>
+                                <option value="LAVADO" selected>EN LAVADO</option>
+                                <option value="TERMINADO">TERMINADO</option>
+                            </select>
+                        </td>
+                        <td>
+                            <a href="detalle-pedido.html" class="btn btn-primary">Ver Ficha</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>#1025</strong></td>
+                        <td>David Rojas</td>
+                        <td>Solo Secado (Frazadas)</td>
+                        <td>
+                            <select class="select-status">
+                                <option value="PENDIENTE" selected>PENDIENTE</option>
+                                <option value="LAVADO">EN LAVADO</option>
+                                <option value="TERMINADO">TERMINADO</option>
+                            </select>
+                        </td>
+                        <td>
+                            <a href="detalle-pedido.html" class="btn btn-primary">Ver Ficha</a>
+                        </td>
+                    </tr>
                 </tbody>
-        </table>
+            </table>
+        </div>
     </div>
 
-    <script src="js/renderer.js"></script>
 </body>
 </html>

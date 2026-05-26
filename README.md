@@ -28,9 +28,16 @@ Solo debes trabajar dentro de la carpeta `src/`. El resto del sistema (Node.js/E
 1.  Actualiza tu rama principal: `git pull origin main`
 2.  Crea una rama específica para la vista asignada: `git checkout -b ui-vista-pedidos`
 3.  Desarrolla el HTML y CSS. Asegúrate de que los botones y enlaces lleven a las otras vistas estáticas correspondientes.
-4.  Prueba visualmente ejecutando `npm start` en tu terminal.
+4.  Prueba visualmente ejecutando el archivo `.bat` (ver sección de Arranque).
 5.  Sube los cambios: `git push origin ui-vista-pedidos` y notifica al equipo para la revisión.
 
 ## 📝 Requisitos de las Vistas
 * **Interactividad básica:** Los modales o menús desplegables pueden usar CSS puro (ej. `:target`, `:hover` o `checkbox hacks`) o JS mínimo exclusivo para el DOM (ej. `element.classList.toggle('active')`). 
 * **Datos de prueba:** Llena las tablas y tarjetas con datos ficticios realistas para evaluar cómo se verá en producción.
+
+---
+
+## 🚀 Archivos de Arranque (Importante al Clonar)
+Al clonar este repositorio, la carpeta `node_modules` **NO** se descarga.
+* ❌ **NO USAR `run_final.vbs`:** Este archivo es exclusivo para la PC física de la lavandería en producción. Si lo usas tras clonar, fallará de forma invisible y no verás la aplicación.
+* ✅ **USAR SIEMPRE `run_debug.bat`:** Haz doble clic en este archivo para trabajar. Este script instalará automáticamente las dependencias si faltan y mantendrá la consola abierta para mostrarte cualquier error en tiempo de ejecución.
