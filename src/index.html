@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoWash - Panel de Administración</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>EcoWash Admin</h2>
+        <ul>
+            <li class="active">Pedidos Activos</li>
+            <li>Historial</li>
+            <li>Configuración</li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <h1>Gestión de Lavandería en Tiempo Real</h1>
+        
+        <table id="pedidosTable">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Estado Actual</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="pedidosBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="js/renderer.js"></script>
+</body>
+</html>
