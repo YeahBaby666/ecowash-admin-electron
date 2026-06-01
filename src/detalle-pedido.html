@@ -2,41 +2,292 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoWash Admin - Detalle de Pedido</title>
+    <title>EcoWash Admin — Detalle Pedido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>EcoWash Admin</h2>
-        </div>
-        <ul class="sidebar-menu">
-            <li class="active">
-                <a href="index.html">📦 Pedidos Activos</a>
-            </li>
-            <li>
-                <a href="inventario.html">🧪 Gestión de Insumos</a>
-            </li>
-            <li>
-                <a href="clientes.html">👥 Lista de Clientes</a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="main-content">
-        <div class="page-header">
-            <div>
-                <a href="index.html" class="btn" style="margin-bottom: 10px; background: #e2e8f0; color: #0f172a;">← Volver</a>
-                <h1>Detalle del Pedido #1024</h1>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">
+                <i data-lucide="leaf"></i>
             </div>
-            <span class="badge badge-lavado">En Diseño</span>
+            <div>
+                <div class="brand-name">EcoWash</div>
+                <div class="brand-sub">Panel Admin</div>
+            </div>
         </div>
-        
-        <div class="table-container" style="padding: 20px;">
-            <p style="color: var(--text-muted);">Aquí va el formulario detallado del pedido: prendas exactas, peso, cobros adicionales y notas del lavandero.</p>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Principal</div>
+            <ul>
+                <li class="active">
+                    <a href="index.html">
+                        <i data-lucide="package"></i>
+                        <span>Pedidos Activos</span>
+                        <span class="nav-badge">6</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="inventario.html">
+                        <i data-lucide="flask-conical"></i>
+                        <span>Gestión de Insumos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="clientes.html">
+                        <i data-lucide="users"></i>
+                        <span>Lista de Clientes</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-pill">
+                <div class="admin-avatar">A</div>
+                <div>
+                    <div class="admin-name">Administrador</div>
+                    <div class="admin-role">EcoWash Admin</div>
+                </div>
+            </div>
         </div>
-    </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <a href="index.html" class="btn btn-back">
+                    <i data-lucide="arrow-left"></i>
+                    Volver a pedidos
+                </a>
+                <div class="topbar-title" style="margin-top:0.5rem">
+                    Ficha del Pedido
+                    <span class="detail-code">ECO-1024</span>
+                </div>
+                <div class="topbar-sub">Creado el 28 de Mayo, 2025 — 10:34 AM</div>
+            </div>
+            <span class="badge badge-lavado" style="font-size:0.85rem;padding:6px 16px">En Lavado</span>
+        </div>
+
+        <!-- GRID DETALLE -->
+        <div class="detail-grid">
+
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="detail-col">
+
+                <!-- DATOS DEL CLIENTE -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <div class="section-card-title">
+                            <i data-lucide="user" class="card-title-icon"></i>
+                            Datos del cliente
+                        </div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="detail-row">
+                            <div class="detail-icon"><i data-lucide="user"></i></div>
+                            <div>
+                                <div class="detail-label">Nombre</div>
+                                <div class="detail-val">Aldo Martinez</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-icon"><i data-lucide="phone"></i></div>
+                            <div>
+                                <div class="detail-label">Teléfono</div>
+                                <div class="detail-val">987 654 321</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-icon"><i data-lucide="map-pin"></i></div>
+                            <div>
+                                <div class="detail-label">Dirección de recojo</div>
+                                <div class="detail-val">Av. Pardo 342, Miraflores</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-icon"><i data-lucide="calendar"></i></div>
+                            <div>
+                                <div class="detail-label">Fecha y horario</div>
+                                <div class="detail-val">28 May 2025 — 10:00 AM – 12:00 PM</div>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-icon"><i data-lucide="truck"></i></div>
+                            <div>
+                                <div class="detail-label">Tipo de entrega</div>
+                                <div class="detail-val">Recojo y entrega a domicilio</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INSTRUCCIONES -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <div class="section-card-title">
+                            <i data-lucide="message-square" class="card-title-icon"></i>
+                            Instrucciones del cliente
+                        </div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="instrucciones-box">
+                            "Por favor tener cuidado con el terno, es de lana fina. El timbre no funciona, llamar al llegar."
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESTADO DEL PEDIDO -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <div class="section-card-title">
+                            <i data-lucide="activity" class="card-title-icon"></i>
+                            Estado del pedido
+                        </div>
+                    </div>
+                    <div class="detail-body">
+                        <div class="timeline">
+                            <div class="timeline-item done">
+                                <div class="tl-dot"><i data-lucide="check"></i></div>
+                                <div class="tl-content">
+                                    <div class="tl-title">Recogido</div>
+                                    <div class="tl-sub">28 May — 10:45 AM</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item active">
+                                <div class="tl-dot"><i data-lucide="waves"></i></div>
+                                <div class="tl-content">
+                                    <div class="tl-title">En Lavado</div>
+                                    <div class="tl-sub">En proceso...</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item pending">
+                                <div class="tl-dot"><i data-lucide="flame"></i></div>
+                                <div class="tl-content">
+                                    <div class="tl-title">Planchado</div>
+                                    <div class="tl-sub">Pendiente</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item pending">
+                                <div class="tl-dot"><i data-lucide="package-check"></i></div>
+                                <div class="tl-content">
+                                    <div class="tl-title">Listo para entrega</div>
+                                    <div class="tl-sub">Pendiente</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item pending">
+                                <div class="tl-dot"><i data-lucide="truck"></i></div>
+                                <div class="tl-content">
+                                    <div class="tl-title">Entregado</div>
+                                    <div class="tl-sub">Pendiente</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+            <div class="detail-col">
+
+                <!-- PRENDAS -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <div class="section-card-title">
+                            <i data-lucide="shirt" class="card-title-icon"></i>
+                            Prendas del pedido
+                        </div>
+                        <span class="badge badge-lavado">Lavado + Planchado</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Prenda</th>
+                                    <th>Tipo</th>
+                                    <th>Cant.</th>
+                                    <th>Precio unit.</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="prenda-cell">
+                                            <i data-lucide="shirt"></i>
+                                            Terno
+                                        </div>
+                                    </td>
+                                    <td class="td-muted">Clásico</td>
+                                    <td>1</td>
+                                    <td class="td-muted">S/ 36.90</td>
+                                    <td class="td-amount">S/ 36.90</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="prenda-cell">
+                                            <i data-lucide="shirt"></i>
+                                            Camisa
+                                        </div>
+                                    </td>
+                                    <td class="td-muted">Clásica</td>
+                                    <td>2</td>
+                                    <td class="td-muted">S/ 15.90</td>
+                                    <td class="td-amount">S/ 31.80</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- RESUMEN DE COBRO -->
+                    <div class="cobro-box">
+                        <div class="cobro-row">
+                            <span>Subtotal</span>
+                            <span>S/ 68.70</span>
+                        </div>
+                        <div class="cobro-row">
+                            <span>IGV (18%)</span>
+                            <span>S/ 10.00</span>
+                        </div>
+                        <div class="cobro-row cobro-total">
+                            <span>Total</span>
+                            <span>S/ 78.70</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOTAS DEL LAVANDERO -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <div class="section-card-title">
+                            <i data-lucide="notebook-pen" class="card-title-icon"></i>
+                            Notas del lavandero
+                        </div>
+                    </div>
+                    <div class="detail-body">
+                        <textarea
+                            class="notas-textarea"
+                            placeholder="Escribe observaciones sobre las prendas, manchas difíciles, cuidados especiales..."
+                        >Terno con mancha leve en manga derecha, aplicar pretratamiento enzimático antes del lavado.</textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
 </html>
