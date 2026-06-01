@@ -2,38 +2,274 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoWash Admin - Clientes</title>
+    <title>EcoWash Admin — Clientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>EcoWash Admin</h2>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">
+                <i data-lucide="leaf"></i>
+            </div>
+            <div>
+                <div class="brand-name">EcoWash</div>
+                <div class="brand-sub">Panel Admin</div>
+            </div>
         </div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="index.html">📦 Pedidos Activos</a>
-            </li>
-            <li>
-                <a href="inventario.html">🧪 Gestión de Insumos</a>
-            </li>
-            <li class="active">
-                <a href="clientes.html">👥 Lista de Clientes</a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="main-content">
-        <div class="page-header">
-            <h1>Directorio de Clientes</h1>
-            <span class="badge badge-pendiente">En Desarrollo</span>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Principal</div>
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <i data-lucide="package"></i>
+                        <span>Pedidos Activos</span>
+                        <span class="nav-badge">6</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="inventario.html">
+                        <i data-lucide="flask-conical"></i>
+                        <span>Gestión de Insumos</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="clientes.html">
+                        <i data-lucide="users"></i>
+                        <span>Lista de Clientes</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-pill">
+                <div class="admin-avatar">A</div>
+                <div>
+                    <div class="admin-name">Administrador</div>
+                    <div class="admin-role">EcoWash Admin</div>
+                </div>
+            </div>
         </div>
-        
-        <div class="table-container" style="padding: 20px;">
-            <p style="color: var(--text-muted);">Aquí va el diseño de la tabla de clientes, historial de visitas y datos de contacto.</p>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Lista de Clientes</div>
+                <div class="topbar-sub">Directorio y historial de clientes registrados</div>
+            </div>
+            <span class="topbar-date" id="fechaHoy"></span>
         </div>
-    </div>
+
+        <!-- KPI CARDS -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-total">
+                    <i data-lucide="users"></i>
+                </div>
+                <div class="kpi-val">24</div>
+                <div class="kpi-label">Total clientes</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-done">
+                    <i data-lucide="user-check"></i>
+                </div>
+                <div class="kpi-val">18</div>
+                <div class="kpi-label">Clientes activos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-washing">
+                    <i data-lucide="repeat"></i>
+                </div>
+                <div class="kpi-val">11</div>
+                <div class="kpi-label">Recurrentes</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-pending">
+                    <i data-lucide="user-plus"></i>
+                </div>
+                <div class="kpi-val">3</div>
+                <div class="kpi-label">Nuevos este mes</div>
+            </div>
+        </div>
+
+        <!-- TABLA CLIENTES -->
+        <div class="section-card">
+            <div class="section-card-header">
+                <div class="section-card-title">Directorio de clientes</div>
+                <div class="filter-tabs">
+                    <span class="filter-tab active" data-filter="all">Todos</span>
+                    <span class="filter-tab" data-filter="activo">Activos</span>
+                    <span class="filter-tab" data-filter="inactivo">Inactivos</span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Pedidos</th>
+                            <th>Último pedido</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaClientes">
+                        <tr data-estado="activo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">A</div>
+                                    <div>
+                                        <div class="client-name">Aldo Martinez</div>
+                                        <div class="client-email">aldo.m@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>987 654 321</td>
+                            <td>Miraflores, Lima</td>
+                            <td><span class="order-count">8</span></td>
+                            <td>28 May 2025</td>
+                            <td><span class="badge badge-terminado">Activo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver historial</a></td>
+                        </tr>
+                        <tr data-estado="activo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">D</div>
+                                    <div>
+                                        <div class="client-name">David Rojas</div>
+                                        <div class="client-email">david.r@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>912 345 678</td>
+                            <td>San Isidro, Lima</td>
+                            <td><span class="order-count">5</span></td>
+                            <td>29 May 2025</td>
+                            <td><span class="badge badge-terminado">Activo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver historial</a></td>
+                        </tr>
+                        <tr data-estado="activo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">M</div>
+                                    <div>
+                                        <div class="client-name">María García</div>
+                                        <div class="client-email">maria.g@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>956 789 012</td>
+                            <td>Surco, Lima</td>
+                            <td><span class="order-count">12</span></td>
+                            <td>30 May 2025</td>
+                            <td><span class="badge badge-terminado">Activo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver historial</a></td>
+                        </tr>
+                        <tr data-estado="activo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">L</div>
+                                    <div>
+                                        <div class="client-name">Luis Paredes</div>
+                                        <div class="client-email">luis.p@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>934 567 890</td>
+                            <td>Barranco, Lima</td>
+                            <td><span class="order-count">3</span></td>
+                            <td>29 May 2025</td>
+                            <td><span class="badge badge-terminado">Activo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver historial</a></td>
+                        </tr>
+                        <tr data-estado="activo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">S</div>
+                                    <div>
+                                        <div class="client-name">Sara Huamán</div>
+                                        <div class="client-email">sara.h@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>978 901 234</td>
+                            <td>La Molina, Lima</td>
+                            <td><span class="order-count">6</span></td>
+                            <td>28 May 2025</td>
+                            <td><span class="badge badge-terminado">Activo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver historial</a></td>
+                        </tr>
+                        <tr data-estado="inactivo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">C</div>
+                                    <div>
+                                        <div class="client-name">Carlos Vega</div>
+                                        <div class="client-email">carlos.v@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>945 678 901</td>
+                            <td>Chorrillos, Lima</td>
+                            <td><span class="order-count">2</span></td>
+                            <td>10 Mar 2025</td>
+                            <td><span class="badge badge-pendiente">Inactivo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-ghost">Ver historial</a></td>
+                        </tr>
+                        <tr data-estado="inactivo">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">R</div>
+                                    <div>
+                                        <div class="client-name">Rosa Mendoza</div>
+                                        <div class="client-email">rosa.m@gmail.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>923 456 789</td>
+                            <td>Pueblo Libre, Lima</td>
+                            <td><span class="order-count">1</span></td>
+                            <td>02 Ene 2025</td>
+                            <td><span class="badge badge-pendiente">Inactivo</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-ghost">Ver historial</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        document.getElementById('fechaHoy').innerText = new Date().toLocaleDateString('es-PE', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const filtro = this.dataset.filter;
+                document.querySelectorAll('#tablaClientes tr').forEach(row => {
+                    row.style.display = (filtro === 'all' || row.dataset.estado === filtro) ? '' : 'none';
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -2,38 +2,348 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoWash Admin - Inventario</title>
+    <title>EcoWash Admin — Inventario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>EcoWash Admin</h2>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">
+                <i data-lucide="leaf"></i>
+            </div>
+            <div>
+                <div class="brand-name">EcoWash</div>
+                <div class="brand-sub">Panel Admin</div>
+            </div>
         </div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="index.html">📦 Pedidos Activos</a>
-            </li>
-            <li class="active">
-                <a href="inventario.html">🧪 Gestión de Insumos</a>
-            </li>
-            <li>
-                <a href="clientes.html">👥 Lista de Clientes</a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="main-content">
-        <div class="page-header">
-            <h1>Gestión de Insumos (Inventario)</h1>
-            <span class="badge badge-pendiente">En Desarrollo</span>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Principal</div>
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <i data-lucide="package"></i>
+                        <span>Pedidos Activos</span>
+                        <span class="nav-badge">6</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="inventario.html">
+                        <i data-lucide="flask-conical"></i>
+                        <span>Gestión de Insumos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="clientes.html">
+                        <i data-lucide="users"></i>
+                        <span>Lista de Clientes</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-pill">
+                <div class="admin-avatar">A</div>
+                <div>
+                    <div class="admin-name">Administrador</div>
+                    <div class="admin-role">EcoWash Admin</div>
+                </div>
+            </div>
         </div>
-        
-        <div class="table-container" style="padding: 20px;">
-            <p style="color: var(--text-muted);">Aquí va el diseño de la tabla de inventario (Detergentes, Suavizantes, etc.) y los botones para agregar stock.</p>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Gestión de Insumos</div>
+                <div class="topbar-sub">Control de stock de productos para lavandería</div>
+            </div>
+            <span class="topbar-date" id="fechaHoy"></span>
         </div>
-    </div>
+
+        <!-- KPI CARDS -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-total">
+                    <i data-lucide="boxes"></i>
+                </div>
+                <div class="kpi-val">12</div>
+                <div class="kpi-label">Total insumos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-done">
+                    <i data-lucide="circle-check"></i>
+                </div>
+                <div class="kpi-val">8</div>
+                <div class="kpi-label">Stock normal</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-pending">
+                    <i data-lucide="triangle-alert"></i>
+                </div>
+                <div class="kpi-val">3</div>
+                <div class="kpi-label">Stock bajo</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-washing">
+                    <i data-lucide="circle-x"></i>
+                </div>
+                <div class="kpi-val">1</div>
+                <div class="kpi-label">Sin stock</div>
+            </div>
+        </div>
+
+        <!-- TABLA INSUMOS -->
+        <div class="section-card">
+            <div class="section-card-header">
+                <div class="section-card-title">Inventario de insumos</div>
+                <div class="filter-tabs">
+                    <span class="filter-tab active" data-filter="all">Todos</span>
+                    <span class="filter-tab" data-filter="normal">Normal</span>
+                    <span class="filter-tab" data-filter="bajo">Stock bajo</span>
+                    <span class="filter-tab" data-filter="agotado">Agotado</span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Insumo</th>
+                            <th>Categoría</th>
+                            <th>Unidad</th>
+                            <th>Stock actual</th>
+                            <th>Stock mínimo</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaInventario">
+                        <tr data-estado="normal">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="droplets"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Detergente Neutro</div>
+                                        <div class="insumo-marca">EcoClean Pro</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Lavado</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val">45</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-normal" style="width:90%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">10 L</td>
+                            <td><span class="badge badge-terminado">Normal</span></td>
+                            <td><button class="btn btn-ghost">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="normal">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="wind"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Suavizante Natural</div>
+                                        <div class="insumo-marca">BioSuave</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Acabado</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val">32</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-normal" style="width:75%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">8 L</td>
+                            <td><span class="badge badge-terminado">Normal</span></td>
+                            <td><button class="btn btn-ghost">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="normal">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="sparkles"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Quitamanchas Enzimático</div>
+                                        <div class="insumo-marca">EnzyClean</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Pretratamiento</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val">18</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-normal" style="width:60%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">5 L</td>
+                            <td><span class="badge badge-terminado">Normal</span></td>
+                            <td><button class="btn btn-ghost">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="normal">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="package"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Bolsas de Tela Entrega</div>
+                                        <div class="insumo-marca">EcoWash Pack</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Empaque</td>
+                            <td>Unidades</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val">120</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-normal" style="width:80%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">20 und</td>
+                            <td><span class="badge badge-terminado">Normal</span></td>
+                            <td><button class="btn btn-ghost">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="bajo">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="droplets"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Detergente para Lana</div>
+                                        <div class="insumo-marca">WoolSafe</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Lavado especial</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val stock-low">4</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-low" style="width:20%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">5 L</td>
+                            <td><span class="badge badge-warning">Stock bajo</span></td>
+                            <td><button class="btn btn-primary">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="bajo">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="shirt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Apresto para Planchado</div>
+                                        <div class="insumo-marca">IronPro</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Planchado</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val stock-low">3</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-low" style="width:15%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">5 L</td>
+                            <td><span class="badge badge-warning">Stock bajo</span></td>
+                            <td><button class="btn btn-primary">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="bajo">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon">
+                                        <i data-lucide="shield"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Impermeabilizante Textil</div>
+                                        <div class="insumo-marca">HydroShield</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Acabado especial</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val stock-low">2</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-low" style="width:10%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">4 L</td>
+                            <td><span class="badge badge-warning">Stock bajo</span></td>
+                            <td><button class="btn btn-primary">+ Agregar stock</button></td>
+                        </tr>
+                        <tr data-estado="agotado">
+                            <td>
+                                <div class="insumo-cell">
+                                    <div class="insumo-icon insumo-icon-danger">
+                                        <i data-lucide="x-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="insumo-name">Detergente para Cuero</div>
+                                        <div class="insumo-marca">LeatherCare</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Lavado especial</td>
+                            <td>Litros</td>
+                            <td>
+                                <div class="stock-cell">
+                                    <span class="stock-val stock-out">0</span>
+                                    <div class="stock-bar"><div class="stock-fill fill-out" style="width:0%"></div></div>
+                                </div>
+                            </td>
+                            <td class="td-muted">3 L</td>
+                            <td><span class="badge badge-danger">Agotado</span></td>
+                            <td><button class="btn btn-danger">+ Agregar stock</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        document.getElementById('fechaHoy').innerText = new Date().toLocaleDateString('es-PE', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const filtro = this.dataset.filter;
+                document.querySelectorAll('#tablaInventario tr').forEach(row => {
+                    row.style.display = (filtro === 'all' || row.dataset.estado === filtro) ? '' : 'none';
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

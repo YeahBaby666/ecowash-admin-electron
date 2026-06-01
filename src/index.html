@@ -2,80 +2,250 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoWash Admin - Panel Principal</title>
+    <title>EcoWash Admin — Pedidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>EcoWash Admin</h2>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">
+                <i data-lucide="leaf"></i>
+            </div>
+            <div>
+                <div class="brand-name">EcoWash</div>
+                <div class="brand-sub">Panel Admin</div>
+            </div>
         </div>
-        <ul class="sidebar-menu">
-            <li class="active">
-                <a href="index.html">📦 Pedidos Activos</a>
-            </li>
-            <li>
-                <a href="inventario.html">🧪 Gestión de Insumos</a>
-            </li>
-            <li>
-                <a href="clientes.html">👥 Lista de Clientes</a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="main-content">
-        <div class="page-header">
-            <h1>Monitoreo de Pedidos Activos</h1>
-            <span class="badge badge-lavado">Fase de Diseño Estático</span>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Principal</div>
+            <ul>
+                <li class="active">
+                    <a href="index.html">
+                        <i data-lucide="package"></i>
+                        <span>Pedidos Activos</span>
+                        <span class="nav-badge">6</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="inventario.html">
+                        <i data-lucide="flask-conical"></i>
+                        <span>Gestión de Insumos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="clientes.html">
+                        <i data-lucide="users"></i>
+                        <span>Lista de Clientes</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-pill">
+                <div class="admin-avatar">A</div>
+                <div>
+                    <div class="admin-name">Administrador</div>
+                    <div class="admin-role">EcoWash Admin</div>
+                </div>
+            </div>
         </div>
-        
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Orden</th>
-                        <th>Cliente</th>
-                        <th>Detalle Servicio</th>
-                        <th>Estado Lavandería</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>#1024</strong></td>
-                        <td>Aldo Martinez</td>
-                        <td>Lavado + Planchado (Terno)</td>
-                        <td>
-                            <select class="select-status">
-                                <option value="PENDIENTE">PENDIENTE</option>
-                                <option value="LAVADO" selected>EN LAVADO</option>
-                                <option value="TERMINADO">TERMINADO</option>
-                            </select>
-                        </td>
-                        <td>
-                            <a href="detalle-pedido.html" class="btn btn-primary">Ver Ficha</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>#1025</strong></td>
-                        <td>David Rojas</td>
-                        <td>Solo Secado (Frazadas)</td>
-                        <td>
-                            <select class="select-status">
-                                <option value="PENDIENTE" selected>PENDIENTE</option>
-                                <option value="LAVADO">EN LAVADO</option>
-                                <option value="TERMINADO">TERMINADO</option>
-                            </select>
-                        </td>
-                        <td>
-                            <a href="detalle-pedido.html" class="btn btn-primary">Ver Ficha</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Pedidos Activos</div>
+                <div class="topbar-sub">Monitoreo del estado de lavandería</div>
+            </div>
+            <div class="topbar-actions">
+                <span class="topbar-date" id="fechaHoy"></span>
+            </div>
         </div>
-    </div>
+
+        <!-- KPI CARDS -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-pending">
+                    <i data-lucide="clock"></i>
+                </div>
+                <div class="kpi-val">3</div>
+                <div class="kpi-label">Pendientes</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-washing">
+                    <i data-lucide="waves"></i>
+                </div>
+                <div class="kpi-val">2</div>
+                <div class="kpi-label">En Lavado</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-done">
+                    <i data-lucide="circle-check"></i>
+                </div>
+                <div class="kpi-val">1</div>
+                <div class="kpi-label">Terminados</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-total">
+                    <i data-lucide="clipboard-list"></i>
+                </div>
+                <div class="kpi-val">6</div>
+                <div class="kpi-label">Total hoy</div>
+            </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class="section-card">
+            <div class="section-card-header">
+                <div class="section-card-title">Órdenes del día</div>
+                <div class="filter-tabs">
+                    <span class="filter-tab active" data-filter="all">Todos</span>
+                    <span class="filter-tab" data-filter="pendiente">Pendientes</span>
+                    <span class="filter-tab" data-filter="lavado">En Lavado</span>
+                    <span class="filter-tab" data-filter="terminado">Terminados</span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Prendas</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaPedidos">
+                        <tr data-estado="lavado">
+                            <td><span class="order-code">ECO-1024</span></td>
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">A</div>
+                                    <span>Aldo Martinez</span>
+                                </div>
+                            </td>
+                            <td>Lavado + Planchado</td>
+                            <td>Terno, Camisa x2</td>
+                            <td class="td-amount">S/ 78.70</td>
+                            <td><span class="badge badge-lavado">En Lavado</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver ficha</a></td>
+                        </tr>
+                        <tr data-estado="pendiente">
+                            <td><span class="order-code">ECO-1025</span></td>
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">D</div>
+                                    <span>David Rojas</span>
+                                </div>
+                            </td>
+                            <td>Solo Secado</td>
+                            <td>Edredón x1, Sábana x2</td>
+                            <td class="td-amount">S/ 90.90</td>
+                            <td><span class="badge badge-pendiente">Pendiente</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver ficha</a></td>
+                        </tr>
+                        <tr data-estado="terminado">
+                            <td><span class="order-code">ECO-1026</span></td>
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">M</div>
+                                    <span>María García</span>
+                                </div>
+                            </td>
+                            <td>Completo</td>
+                            <td>Vestido x1, Blusa x3</td>
+                            <td class="td-amount">S/ 103.60</td>
+                            <td><span class="badge badge-terminado">Terminado</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver ficha</a></td>
+                        </tr>
+                        <tr data-estado="lavado">
+                            <td><span class="order-code">ECO-1027</span></td>
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">L</div>
+                                    <span>Luis Paredes</span>
+                                </div>
+                            </td>
+                            <td>Solo Lavado</td>
+                            <td>Casaca x1, Pantalón x2</td>
+                            <td class="td-amount">S/ 72.70</td>
+                            <td><span class="badge badge-lavado">En Lavado</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver ficha</a></td>
+                        </tr>
+                        <tr data-estado="pendiente">
+                            <td><span class="order-code">ECO-1028</span></td>
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">S</div>
+                                    <span>Sara Huamán</span>
+                                </div>
+                            </td>
+                            <td>Planchado</td>
+                            <td>Camisa x4, Blusa x2</td>
+                            <td class="td-amount">S/ 109.20</td>
+                            <td><span class="badge badge-pendiente">Pendiente</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver ficha</a></td>
+                        </tr>
+                        <tr data-estado="pendiente">
+                            <td><span class="order-code">ECO-1029</span></td>
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-avatar">C</div>
+                                    <span>Carlos Vega</span>
+                                </div>
+                            </td>
+                            <td>Completo</td>
+                            <td>Polo x3, Pantalón x1</td>
+                            <td class="td-amount">S/ 77.60</td>
+                            <td><span class="badge badge-pendiente">Pendiente</span></td>
+                            <td><a href="detalle-pedido.html" class="btn btn-primary">Ver ficha</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Inicializar iconos Lucide
+        lucide.createIcons();
+
+        // Fecha de hoy
+        document.getElementById('fechaHoy').innerText = new Date().toLocaleDateString('es-PE', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // Filtros por estado — solo DOM, sin backend
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const filtro = this.dataset.filter;
+                document.querySelectorAll('#tablaPedidos tr').forEach(row => {
+                    if (filtro === 'all' || row.dataset.estado === filtro) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
