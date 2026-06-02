@@ -76,6 +76,22 @@ async function actualizarEstado(codigo, nuevoEstado) {
     }
 }
 
+// Listeners para los botones de control de ventana
+document.addEventListener('DOMContentLoaded', () => {
+    const btnMin = document.getElementById('btn-min');
+    const btnMax = document.getElementById('btn-max');
+    const btnClose = document.getElementById('btn-close');
+
+    if (btnMin) btnMin.addEventListener('click', () => window.api.window.minimize());
+    if (btnMax) btnMax.addEventListener('click', () => window.api.window.maximize());
+    if (btnClose) btnClose.addEventListener('click', () => window.api.window.close());
+    
+    // Si usas lucide.createIcons() globalmente, asegúrate de llamarlo después de cargar este DOM
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+});
+
 // Para "Tiempo Real" simple (Polling cada 5 segundos)
 setInterval(cargarPedidos, 5000);
 cargarPedidos();

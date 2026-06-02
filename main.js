@@ -8,6 +8,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    frame: false, // <-- ESTO OCULTA LA BARRA NATIVA
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -16,9 +17,6 @@ function createWindow () {
   });
 
   mainWindow.loadFile('src/index.html');
-  
-  // Abre las herramientas de desarrollo si lo necesitas
-  // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
@@ -27,6 +25,23 @@ app.whenReady().then(() => {
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+});
+
+// -- NUEVO: Eventos IPC para controlar la ventana --
+ipcMain.on('window-minimize', () => {
+    mainWindow.minimize();
+});
+
+ipcMain.on('window-maximize', () => {
+    if (mainWindow.isMaximized()) {
+        mainWindow.unmaximize();
+    } else {
+        mainWindow.maximize();
+    }
+});
+
+ipcMain.on('window-close', () => {
+    mainWindow.close();
 });
 
 app.on('window-all-closed', function () {

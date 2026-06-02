@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>EcoWash Admin — Clientes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/admin.css">
 </head>
+
 <body>
+
+    <div class="custom-titlebar">
+        <div class="titlebar-drag-region">EcoWash Admin</div>
+        <div class="titlebar-controls">
+            <button class="win-btn" id="btn-min" title="Minimizar">
+                <i data-lucide="minus"></i>
+            </button>
+            <button class="win-btn" id="btn-max" title="Maximizar">
+                <i data-lucide="square"></i>
+            </button>
+            <button class="win-btn btn-close" id="btn-close" title="Cerrar">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -41,6 +60,12 @@
                     <a href="clientes.html">
                         <i data-lucide="users"></i>
                         <span>Lista de Clientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="ingresos.html">
+                        <i data-lucide="trending-up"></i>
+                        <span>Gestión de Ingresos</span>
                     </a>
                 </li>
             </ul>
@@ -251,7 +276,7 @@
         </div>
 
     </main>
-
+    <script src="js/renderer.js"></script>
     <script>
         lucide.createIcons();
 
@@ -272,4 +297,5 @@
     </script>
 
 </body>
+
 </html>
