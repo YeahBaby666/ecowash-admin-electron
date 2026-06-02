@@ -1,3 +1,4 @@
+<!-- ENTORNO DE EJECUCIÓN: VISUAL STUDIO CODE (Archivo: src/ingresos.html) -->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -11,7 +12,6 @@
     <link rel="stylesheet" href="css/admin.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos específicos del dashboard para asegurar la visualización estática */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -51,54 +51,6 @@
             margin-bottom: 30px;
         }
 
-        /* Gráfico de barras estático usando CSS */
-        .static-chart {
-            display: flex;
-            align-items: flex-end;
-            height: 250px;
-            gap: 20px;
-            margin-top: 20px;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 5px;
-        }
-
-        .bar-group {
-            display: flex;
-            align-items: flex-end;
-            flex: 1;
-            height: 100%;
-            position: relative;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .bar-wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            width: 40%;
-            height: 100%;
-        }
-
-        .bar {
-            width: 100%;
-            border-radius: 4px 4px 0 0;
-            background: #4CAF50;
-        }
-
-        .bar.expense {
-            background: #f44336;
-        }
-
-        .bar-label {
-            position: absolute;
-            bottom: -25px;
-            font-size: 12px;
-            color: #666;
-            width: 100%;
-            text-align: center;
-        }
-
         .tables-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -124,20 +76,17 @@
             font-weight: bold;
         }
 
-        /* Estructura del Gráfico con Ejes */
         .chart-wrapper {
             display: flex;
             margin-top: 20px;
             position: relative;
         }
 
-        /* Eje Vertical (Y) */
         .y-axis {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height: 220px;
-            /* Altura efectiva de la zona de barras */
             padding-right: 15px;
             text-align: right;
             color: var(--muted);
@@ -147,14 +96,12 @@
             box-sizing: border-box;
         }
 
-        /* Zona contenedora de barras y líneas de fondo */
         .chart-area {
             flex: 1;
             position: relative;
             height: 220px;
         }
 
-        /* Líneas de Guía Horizontales */
         .grid-lines {
             position: absolute;
             top: 0;
@@ -176,10 +123,8 @@
 
         .grid-line.baseline {
             border-top: 2px solid var(--border);
-            /* Línea base inferior */
         }
 
-        /* Gráfico de barras ajustado */
         .static-chart {
             display: flex;
             align-items: flex-end;
@@ -187,7 +132,6 @@
             gap: 24px;
             position: relative;
             z-index: 2;
-            /* Por encima de las líneas de guía */
         }
 
         .bar-group {
@@ -217,7 +161,6 @@
 
         .bar.expense {
             background: #dc2626;
-            /* Color dinámico para gastos */
         }
 
         .bar-label {
@@ -405,48 +348,27 @@
                 </div>
             </div>
 
-            <div
-                style="margin-top: 35px; display: flex; gap: 24px; font-size: 13px; justify-content: center; font-weight: 500;">
-                <div><span
-                        style="display:inline-block; width:12px; height:12px; background:var(--leaf); border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>
-                    Ingresos Totales</div>
-                <div><span
-                        style="display:inline-block; width:12px; height:12px; background:#dc2626; border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>
-                    Gastos de Operación / Planilla</div>
+            <div style="margin-top: 35px; display: flex; gap: 24px; font-size: 13px; justify-content: center; font-weight: 500;">
+                <div><span style="display:inline-block; width:12px; height:12px; background:var(--leaf); border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>Ingresos Totales</div>
+                <div><span style="display:inline-block; width:12px; height:12px; background:#dc2626; border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>Gastos de Operación / Planilla</div>
             </div>
         </section>
 
         <section class="tables-grid">
+            <!-- AQUÍ SE INTRODUJO EL CAMBIO DEL ID DINÁMICO PARA EL RENDIMIENTO -->
             <div class="chart-container">
-                <h2>Rendimiento Mensual (2026)</h2>
+                <h2>Rendimiento y Registro de Transacciones</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Mes</th>
-                            <th>Nuevos Clientes</th>
-                            <th>Ingresos</th>
-                            <th>Gastos Totales</th>
+                            <th>Código</th>
+                            <th>Descripción del Concepto</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Enero</td>
-                            <td>9</td>
-                            <td>S/ 3,000</td>
-                            <td>S/ 1,800</td>
-                        </tr>
-                        <tr>
-                            <td>Febrero</td>
-                            <td>5</td>
-                            <td>S/ 1,500</td>
-                            <td>S/ 1,000</td>
-                        </tr>
-                        <tr>
-                            <td>Marzo</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
+                    <tbody id="ingresosBody">
+                        <!-- Las filas se inyectan dinámicamente desde renderer.js -->
                     </tbody>
                 </table>
             </div>
