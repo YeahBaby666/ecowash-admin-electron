@@ -32,7 +32,16 @@ async function cargarPedidos() {
     if (!tbody) return;
 
     try {
-        const response = await fetch(`${API_BASE}/pedidos`, { headers: { 'Accept': 'application/json' } });
+        // 1. TÉCNICA CACHE-BUSTING: Forzamos la actualización sin usar cabeceras CORS restrictivas
+        const t = new Date().getTime();
+        const response = await fetch(`${API_BASE}/pedidos?_t=${t}`, { 
+            method: 'GET',
+            headers: { 
+                'Accept': 'application/json'
+            },
+            cache: 'no-store' // Previene caché interno de disco de Chromium
+        });
+        
         if (!response.ok) throw new Error('Error HTTP');
         const pedidos = await response.json();
         
@@ -107,12 +116,16 @@ async function cargarPedidos() {
     }
 }
 
+// CORRECCIÓN: Función restaurada a su versión PUT para actualizar estados
 async function actualizarEstado(id, nuevoEstado) {
     if(!nuevoEstado) return;
     try {
         const response = await fetch(`${API_BASE}/pedidos/${id}/estado`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            },
             body: JSON.stringify({ estado: nuevoEstado })
         });
         if (response.ok) {
@@ -133,7 +146,14 @@ async function cargarClientes() {
     if (!tbody) return;
 
     try {
-        const response = await fetch(`${API_BASE}/clientes`);
+        // TÉCNICA CACHE-BUSTING
+        const t = new Date().getTime();
+        const response = await fetch(`${API_BASE}/clientes?_t=${t}`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' },
+            cache: 'no-store'
+        });
+        
         if (!response.ok) throw new Error('Error HTTP');
         const clientes = await response.json();
         
@@ -146,7 +166,7 @@ async function cargarClientes() {
 
         clientes.forEach(c => {
             const tr = document.createElement('tr');
-            tr.dataset.estado = c.estado.toLowerCase(); 
+            tr.dataset.estado = c.estado ? c.estado.toLowerCase() : 'activo'; 
             tr.innerHTML = `
                 <td>
                     <div class="client-cell">
@@ -157,11 +177,11 @@ async function cargarClientes() {
                         </div>
                     </div>
                 </td>
-                <td>${c.telefono}</td>
-                <td>${c.direccion}</td>
-                <td><span class="order-count">${c.totalPedidos}</span></td>
-                <td>${c.fechaUltimoPedido}</td>
-                <td><span class="badge badge-terminado">${c.estado}</span></td>
+                <td>${c.telefono || 'Sin registro'}</td>
+                <td>${c.direccion || 'Sin registro'}</td>
+                <td><span class="order-count">${c.totalPedidos || 0}</span></td>
+                <td>${c.fechaUltimoPedido || 'Reciente'}</td>
+                <td><span class="badge badge-terminado">${c.estado || 'Activo'}</span></td>
                 <td><button class="btn btn-ghost" onclick="alert('Próximamente: Ficha de cliente')">Ver historial</button></td>
             `;
             tbody.appendChild(tr);
@@ -183,13 +203,20 @@ async function cargarClientes() {
 // ==========================================
 // MÓDULO: INGRESOS (ingresos.html)
 // ==========================================
-
 async function cargarIngresos() {
     try {
+        // TÉCNICA CACHE-BUSTING
+        const t = new Date().getTime();
+        const fetchConfig = { 
+            method: 'GET', 
+            headers: { 'Accept': 'application/json' }, 
+            cache: 'no-store' 
+        };
+
         // Carga paralela de Pedidos y Clientes desde Spring Boot
         const [resPedidos, resClientes] = await Promise.all([
-            fetch(`${API_BASE}/pedidos`),
-            fetch(`${API_BASE}/clientes`)
+            fetch(`${API_BASE}/pedidos?_t=${t}`, fetchConfig),
+            fetch(`${API_BASE}/clientes?_t=${t}`, fetchConfig)
         ]);
 
         if (!resPedidos.ok || !resClientes.ok) throw new Error('Error al obtener datos');
@@ -242,43 +269,51 @@ async function cargarIngresos() {
         }
 
         // 1. ACTUALIZAR TARJETAS SUPERIORES (KPIs)
-        document.getElementById('kpi-ingresos').innerText = `S/ ${ingresosTotales.toFixed(2)}`;
-        document.getElementById('kpi-gastos').innerText = `S/ ${gastosEstimados.toFixed(2)}`;
-        document.getElementById('kpi-clientes').innerText = totalClientes;
-        document.getElementById('kpi-neto').innerText = `S/ ${beneficioNeto.toFixed(2)}`;
+        const kpiIng = document.getElementById('kpi-ingresos');
+        const kpiGas = document.getElementById('kpi-gastos');
+        const kpiCli = document.getElementById('kpi-clientes');
+        const kpiNet = document.getElementById('kpi-neto');
+
+        if(kpiIng) kpiIng.innerText = `S/ ${ingresosTotales.toFixed(2)}`;
+        if(kpiGas) kpiGas.innerText = `S/ ${gastosEstimados.toFixed(2)}`;
+        if(kpiCli) kpiCli.innerText = totalClientes;
+        if(kpiNet) kpiNet.innerText = `S/ ${beneficioNeto.toFixed(2)}`;
 
         // 2. DIBUJAR GRÁFICO DINÁMICO (Solo meses con datos reales)
         const chartContainer = document.getElementById('dynamic-chart');
-        chartContainer.innerHTML = '';
-        const maxMontoMensual = Math.max(...Object.values(ingresosPorMes), 1); // Evitar div/0
+        if(chartContainer) {
+            chartContainer.innerHTML = '';
+            const maxMontoMensual = Math.max(...Object.values(ingresosPorMes), 1); // Evitar div/0
 
-        Object.keys(ingresosPorMes).sort().forEach(mesStr => {
-            const ingresoMensual = ingresosPorMes[mesStr];
-            const gastoMensual = ingresoMensual * 0.65;
-            
-            // Altura relativa al mes top para mantener el gráfico proporcionado
-            const alturaIngreso = (ingresoMensual / maxMontoMensual) * 100;
-            const alturaGasto = (gastoMensual / maxMontoMensual) * 100;
-            
-            // Formatear etiqueta (Ej: "Jun '26")
-            const [y, m] = mesStr.split('-');
-            const mesNombre = new Date(y, m - 1).toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+            Object.keys(ingresosPorMes).sort().forEach(mesStr => {
+                const ingresoMensual = ingresosPorMes[mesStr];
+                const gastoMensual = ingresoMensual * 0.65;
+                
+                // Altura relativa al mes top para mantener el gráfico proporcionado
+                const alturaIngreso = (ingresoMensual / maxMontoMensual) * 100;
+                const alturaGasto = (gastoMensual / maxMontoMensual) * 100;
+                
+                // Formatear etiqueta (Ej: "Jun '26")
+                const [y, m] = mesStr.split('-');
+                const mesNombre = new Date(y, m - 1).toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
 
-            chartContainer.innerHTML += `
-                <div class="bar-group">
-                    <div class="bar-wrapper">
-                        <div class="bar" style="height: ${alturaIngreso}%;" title="Ingresos: S/ ${ingresoMensual.toFixed(2)}"></div>
+                chartContainer.innerHTML += `
+                    <div class="bar-group">
+                        <div class="bar-wrapper">
+                            <div class="bar" style="height: ${alturaIngreso}%;" title="Ingresos: S/ ${ingresoMensual.toFixed(2)}"></div>
+                        </div>
+                        <div class="bar-wrapper">
+                            <div class="bar expense" style="height: ${alturaGasto}%;" title="Gastos: S/ ${gastoMensual.toFixed(2)}"></div>
+                        </div>
+                        <span class="bar-label" style="text-transform: capitalize;">${mesNombre}</span>
                     </div>
-                    <div class="bar-wrapper">
-                        <div class="bar expense" style="height: ${alturaGasto}%;" title="Gastos: S/ ${gastoMensual.toFixed(2)}"></div>
-                    </div>
-                    <span class="bar-label" style="text-transform: capitalize;">${mesNombre}</span>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
 
         // 3. INYECTAR LAS 10 MÉTRICAS (Divididas en dos tablas)
-        document.getElementById('metrics-finanzas').innerHTML = `
+        const metricsFin = document.getElementById('metrics-finanzas');
+        if(metricsFin) metricsFin.innerHTML = `
             <tr><td><strong>Ingresos Brutos Históricos</strong></td><td>S/ ${ingresosTotales.toFixed(2)}</td></tr>
             <tr><td><strong>Gastos Operativos (65% ROI)</strong></td><td>S/ ${gastosEstimados.toFixed(2)}</td></tr>
             <tr><td><strong>Margen de Beneficio Neto</strong></td><td><span style="color:var(--leaf); font-weight:bold;">S/ ${beneficioNeto.toFixed(2)}</span></td></tr>
@@ -286,7 +321,8 @@ async function cargarIngresos() {
             <tr><td><strong>Mes de Mayor Rendimiento</strong></td><td>${mesTop} (S/ ${maxIngreso.toFixed(2)})</td></tr>
         `;
 
-        document.getElementById('metrics-operaciones').innerHTML = `
+        const metricsOp = document.getElementById('metrics-operaciones');
+        if(metricsOp) metricsOp.innerHTML = `
             <tr><td><strong>Total de Pedidos Efectivos</strong></td><td>${pedidosCompletados} transacciones</td></tr>
             <tr><td><strong>Volumen de Ropa Lavada</strong></td><td>${totalPrendas} prendas</td></tr>
             <tr><td><strong>Promedio de Prendas (Ticket)</strong></td><td>${prendasPorPedido.toFixed(1)} prendas</td></tr>
