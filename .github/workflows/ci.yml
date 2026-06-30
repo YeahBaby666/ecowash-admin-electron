@@ -11,10 +11,10 @@ jobs:
     name: Validar Frontend Electron
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
       
@@ -64,7 +64,7 @@ jobs:
     name: Validar Estructura del Proyecto
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Check project structure
         run: |
@@ -87,10 +87,10 @@ jobs:
     name: Test Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 
         with:
           node-version: '22'
       
