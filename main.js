@@ -4,8 +4,8 @@ const path = require('path');
 
 // 1. Define tu variable (puedes alternar entre local y producción)
 // Si tienes un archivo .env, tomará esa URL. Si no, usará localhost por defecto.
-const API_URL = process.env.API_URL || 'http://localhost:9090'; 
-// const API_URL = 'https://tu-app-ecowash.onrender.com';
+const API_URL = process.env.API_URL || 'https://ecowash-di2g.onrender.com'; 
+// const API_URL = 'https://tu-app-ecowash.onrender.com' o 'http://localhost:9090';
 
 let mainWindow;
 

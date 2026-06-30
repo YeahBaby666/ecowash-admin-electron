@@ -1,5 +1,5 @@
 // Apuntamos al puerto donde corre tu Spring Boot
-const API_BASE = 'http://localhost:9090/api/admin'; 
+const API_BASE = 'https://ecowash-di2g.onrender.com/api/admin'; // O 'http://localhost:9090/api/admin' si estás en local
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Controles de Ventana (Electron)

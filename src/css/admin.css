@@ -209,10 +209,18 @@ body {
     flex: 1;
     height: calc(100vh - 35px);
     overflow-y: auto;
-    padding: 2rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    /* El 4rem (padding inferior) ahora será respetado estrictamente por el navegador */
+    padding: 2rem 2.5rem 4rem 2.5rem; 
+    
+    /* CRÍTICO: Usar block en lugar de flex desactiva el bug de Chromium que corta los últimos elementos */
+    display: block; 
+}
+
+/* Como quitamos flex, restauramos la separación vertical entre tarjetas/tablas */
+.main-content > section,
+.main-content > header,
+.main-content > div {
+    margin-bottom: 1.5rem;
 }
 
 /* ── TOPBAR ── */
@@ -315,12 +323,11 @@ body {
 .filter-tab:hover:not(.active) { background: var(--border); }
 
 /* ── TABLA ── */
-/* ── TABLA CON SCROLL DINÁMICO ── */
 .table-wrap { 
+    width: 100%;
     overflow-x: auto; 
-    overflow-y: auto;
-    /* Calcula el espacio restante de la pantalla restando Topbar, KPIs y paddings */
-    max-height: calc(100vh - 360px); 
+    /* ELIMINADO: max-height y overflow-y. La tabla ahora crece libremente hacia abajo */
+    border-radius: 8px;
 }
 
 .admin-table {
@@ -337,22 +344,32 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--muted);
-    border-bottom: 1px solid var(--border);
     white-space: nowrap;
-    /* Cabecera Fija (Sticky) */
+    
+    /* Sticky nativo: se ancla al scroll principal de .main-content */
     position: sticky;
     top: 0;
     z-index: 10;
-    box-shadow: 0 1px 0 var(--border);
+    
+    /* Usamos box-shadow en lugar de border-bottom para que la línea no desaparezca al hacer scroll */
+    border-bottom: none;
+    box-shadow: inset 0 -1.5px 0 var(--border);
 }
+
 .admin-table td {
     padding: 0.9rem 1.2rem;
     font-size: 0.88rem;
     border-bottom: 1px solid var(--border);
     color: var(--ink);
 }
-.admin-table tr:last-child td { border-bottom: none; }
-.admin-table tbody tr:hover td { background: #f8faf8; }
+
+.admin-table tr:last-child td { 
+    border-bottom: none; 
+}
+
+.admin-table tbody tr:hover td { 
+    background: #f8faf8; 
+}
 
 .order-code {
     font-family: 'Fraunces', serif;
