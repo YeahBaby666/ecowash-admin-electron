@@ -310,40 +310,40 @@
 
         <section class="dashboard-grid">
             <div class="kpi-card">
-                <h3>Ingresos Actuales (2026)</h3>
-                <div class="value">S/ 4,500</div>
-                <small>Inicio de año</small>
+                <h3>Ingresos Totales Brutos</h3>
+                <div class="value" id="kpi-ingresos">S/ 0.00</div>
+                <small>Acumulado histórico</small>
             </div>
             <div class="kpi-card expense-card">
-                <h3>Gastos Actuales (2026)</h3>
-                <div class="value">S/ 2,800</div>
+                <h3>Gastos Operativos (Est. 65%)</h3>
+                <div class="value" id="kpi-gastos">S/ 0.00</div>
                 <small>Operaciones y Planilla</small>
             </div>
             <div class="kpi-card">
-                <h3>Nuevos Clientes (2026)</h3>
-                <div class="value">14</div>
-                <small>Acumulado anual</small>
+                <h3>Clientes Registrados</h3>
+                <div class="value" id="kpi-clientes">0</div>
+                <small>Total en plataforma</small>
             </div>
-            <div class="kpi-card">
-                <h3>Plantilla Activa</h3>
-                <div class="value">5 Empleados</div>
-                <small>Operativos</small>
+            <div class="kpi-card" style="border-left-color: #2196F3;">
+                <h3>Beneficio Neto Total</h3>
+                <div class="value" id="kpi-neto">S/ 0.00</div>
+                <small>Utilidad real</small>
             </div>
         </section>
 
         <section class="chart-container" style="padding-bottom: 40px;">
             <div class="section-card-title" style="margin-bottom: 15px;">
                 <i data-lucide="trending-up" class="card-title-icon"></i>
-                <span>Comparativa Histórica 5 Años (Ingresos vs Gastos)</span>
+                <span>Rendimiento Real por Mes (Ingresos vs Gastos)</span>
             </div>
 
             <div class="chart-wrapper">
                 <div class="y-axis">
-                    <div>S/ 100,000</div>
-                    <div>S/ 75,000</div>
-                    <div>S/ 50,000</div>
-                    <div>S/ 25,000</div>
-                    <div>S/ 0</div>
+                    <div>100%</div>
+                    <div>75%</div>
+                    <div>50%</div>
+                    <div>25%</div>
+                    <div>0%</div>
                 </div>
 
                 <div class="chart-area">
@@ -355,129 +355,32 @@
                         <div class="grid-line baseline"></div>
                     </div>
 
-                    <div class="static-chart">
-                        <div class="bar-group">
-                            <div class="bar-wrapper">
-                                <div class="bar" style="height: 50%;" title="Ingresos 2022: S/ 50,000"></div>
-                            </div>
-                            <div class="bar-wrapper">
-                                <div class="bar expense" style="height: 30%;" title="Gastos 2022: S/ 30,000"></div>
-                            </div>
-                            <span class="bar-label">2022</span>
-                        </div>
-                        <div class="bar-group">
-                            <div class="bar-wrapper">
-                                <div class="bar" style="height: 65%;" title="Ingresos 2023: S/ 65,000"></div>
-                            </div>
-                            <div class="bar-wrapper">
-                                <div class="bar expense" style="height: 40%;" title="Gastos 2023: S/ 40,000"></div>
-                            </div>
-                            <span class="bar-label">2023</span>
-                        </div>
-                        <div class="bar-group">
-                            <div class="bar-wrapper">
-                                <div class="bar" style="height: 80%;" title="Ingresos 2024: S/ 80,000"></div>
-                            </div>
-                            <div class="bar-wrapper">
-                                <div class="bar expense" style="height: 55%;" title="Gastos 2024: S/ 55,000"></div>
-                            </div>
-                            <span class="bar-label">2024</span>
-                        </div>
-                        <div class="bar-group">
-                            <div class="bar-wrapper">
-                                <div class="bar" style="height: 100%;" title="Ingresos 2025: S/ 100,000"></div>
-                            </div>
-                            <div class="bar-wrapper">
-                                <div class="bar expense" style="height: 70%;" title="Gastos 2025: S/ 70,000"></div>
-                            </div>
-                            <span class="bar-label">2025</span>
-                        </div>
-                        <div class="bar-group">
-                            <div class="bar-wrapper">
-                                <div class="bar" style="height: 4.5%;" title="Ingresos 2026: S/ 4,500"></div>
-                            </div>
-                            <div class="bar-wrapper">
-                                <div class="bar expense" style="height: 2.8%;" title="Gastos 2026: S/ 2,800"></div>
-                            </div>
-                            <span class="bar-label">2026 (YTD)</span>
-                        </div>
-                    </div>
+                    <div class="static-chart" id="dynamic-chart"></div>
                 </div>
             </div>
 
-            <div
-                style="margin-top: 35px; display: flex; gap: 24px; font-size: 13px; justify-content: center; font-weight: 500;">
-                <div><span
-                        style="display:inline-block; width:12px; height:12px; background:var(--leaf); border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>
+            <div style="margin-top: 35px; display: flex; gap: 24px; font-size: 13px; justify-content: center; font-weight: 500;">
+                <div><span style="display:inline-block; width:12px; height:12px; background:var(--leaf); border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>
                     Ingresos Totales</div>
-                <div><span
-                        style="display:inline-block; width:12px; height:12px; background:#dc2626; border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>
+                <div><span style="display:inline-block; width:12px; height:12px; background:#dc2626; border-radius: 3px; vertical-align: middle; margin-right: 4px;"></span>
                     Gastos de Operación / Planilla</div>
             </div>
         </section>
 
         <section class="tables-grid">
             <div class="chart-container">
-                <h2>Rendimiento Mensual (2026)</h2>
+                <h2>1. Métricas Financieras Clave</h2>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Mes</th>
-                            <th>Nuevos Clientes</th>
-                            <th>Ingresos</th>
-                            <th>Gastos Totales</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Enero</td>
-                            <td>9</td>
-                            <td>S/ 3,000</td>
-                            <td>S/ 1,800</td>
-                        </tr>
-                        <tr>
-                            <td>Febrero</td>
-                            <td>5</td>
-                            <td>S/ 1,500</td>
-                            <td>S/ 1,000</td>
-                        </tr>
-                        <tr>
-                            <td>Marzo</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="metrics-finanzas">
+                        </tbody>
                 </table>
             </div>
 
             <div class="chart-container">
-                <h2>Estructura de Gastos (Contexto Operativo)</h2>
+                <h2>2. Métricas Operativas de Lavado</h2>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Categoría</th>
-                            <th>Descripción</th>
-                            <th>Proporción Estimada</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Planilla</td>
-                            <td>Pago mensual a 5 empleados activos</td>
-                            <td>60%</td>
-                        </tr>
-                        <tr>
-                            <td>Proceso de Pedido</td>
-                            <td>Insumos, agua, energía, logística</td>
-                            <td>30%</td>
-                        </tr>
-                        <tr>
-                            <td>Mantenimiento</td>
-                            <td>Equipos de lavado y sistemas</td>
-                            <td>10%</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="metrics-operaciones">
+                        </tbody>
                 </table>
             </div>
         </section>
