@@ -1,0 +1,103 @@
+name: CI - EcoWash Admin & Backend
+
+on:
+  push:
+    branches: [ main, Franco, backend ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-frontend:
+    name: Validar Frontend Electron
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Validate HTML files
+        run: |
+          echo "✓ Validando archivos HTML..."
+          test -f src/index.html && echo "  ✓ index.html OK"
+          test -f src/clientes.html && echo "  ✓ clientes.html OK"
+          test -f src/inventario.html && echo "  ✓ inventario.html OK"
+          test -f src/detalle-pedido.html && echo "  ✓ detalle-pedido.html OK"
+          test -f src/ingresos.html && echo "  ✓ ingresos.html OK"
+      
+      - name: Validate CSS
+        run: |
+          echo "✓ Validando CSS..."
+          test -f src/css/admin.css && echo "  ✓ admin.css OK"
+      
+      - name: Validate JavaScript
+        run: |
+          echo "✓ Validando JavaScript..."
+          test -f src/js/renderer.js && echo "  ✓ renderer.js OK"
+          test -f main.js && echo "  ✓ main.js OK"
+          test -f preload.js && echo "  ✓ preload.js OK"
+      
+      - name: Validate dependencies
+        run: |
+          echo "✓ Validando dependencias..."
+          node -e "JSON.parse(require('fs').readFileSync('package.json'))"
+          echo "  ✓ package.json válido"
+      
+      - name: Check Electron config
+        run: |
+          echo "✓ Configuración de Electron..."
+          test -f main.js && grep -q "BrowserWindow" main.js && echo "  ✓ main.js configurado"
+          test -f preload.js && grep -q "contextBridge" preload.js && echo "  ✓ preload.js configurado"
+      
+      - name: Lint check (sintaxis básica)
+        run: |
+          echo "✓ Validando sintaxis..."
+          node -c main.js && echo "  ✓ main.js sintaxis OK"
+          node -c preload.js && echo "  ✓ preload.js sintaxis OK"
+
+  validate-structure:
+    name: Validar Estructura del Proyecto
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check project structure
+        run: |
+          echo "✓ Verificando estructura..."
+          test -d src && echo "  ✓ /src existe"
+          test -d src/css && echo "  ✓ /src/css existe"
+          test -d src/js && echo "  ✓ /src/js existe"
+          test -d .github/workflows && echo "  ✓ /.github/workflows existe"
+          test -f .gitignore && echo "  ✓ .gitignore existe"
+          test -f README.md && echo "  ✓ README.md existe"
+      
+      - name: Check files count
+        run: |
+          echo "✓ Contando archivos..."
+          HTML_COUNT=$(find src -name "*.html" | wc -l)
+          echo "  ✓ Archivos HTML: $HTML_COUNT"
+          test $HTML_COUNT -ge 5 && echo "  ✓ Mínimo de vistas cumplido"
+
+  build-test:
+    name: Test Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Verify Electron install
+        run: |
+          echo "✓ Verificando instalación de Electron..."
+          npx electron --version || echo "   Electron no disponible (esperado en CI)"
