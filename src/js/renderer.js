@@ -201,11 +201,15 @@ async function cargarClientes() {
 }
 
 // ==========================================
-// MÓDULO: INGRESOS (ingresos.html)
+// MÓDULO: INGRESOS (Carga Secuencial y Blindaje)
 // ==========================================
 async function cargarIngresos() {
+    // 1. Verificación: Si no estamos en la vista de ingresos, detenemos la función
+    const kpiIng = document.getElementById('kpi-ingresos');
+    if (!kpiIng) return;
+
     try {
-        // TÉCNICA CACHE-BUSTING
+        // Cache-Busting
         const t = new Date().getTime();
         const fetchConfig = { 
             method: 'GET', 
@@ -213,44 +217,43 @@ async function cargarIngresos() {
             cache: 'no-store' 
         };
 
-        // Carga paralela de Pedidos y Clientes desde Spring Boot
-        const [resPedidos, resClientes] = await Promise.all([
-            fetch(`${API_BASE}/pedidos?_t=${t}`, fetchConfig),
-            fetch(`${API_BASE}/clientes?_t=${t}`, fetchConfig)
-        ]);
-
-        if (!resPedidos.ok || !resClientes.ok) throw new Error('Error al obtener datos');
-
+        // 2. CARGA SECUENCIAL: Previene saturar el pool de conexiones en la capa gratuita
+        const resPedidos = await fetch(`${API_BASE}/pedidos?_t=${t}`, fetchConfig);
+        if (!resPedidos.ok) throw new Error(`Fallo en /pedidos: HTTP ${resPedidos.status}`);
         const pedidos = await resPedidos.json();
+
+        const resClientes = await fetch(`${API_BASE}/clientes?_t=${t}`, fetchConfig);
+        if (!resClientes.ok) throw new Error(`Fallo en /clientes: HTTP ${resClientes.status}`);
         const clientes = await resClientes.json();
 
-        // Acumuladores de las 10 métricas
         let ingresosTotales = 0;
         let pedidosCompletados = 0;
         let pedidosCancelados = 0;
         let totalPrendas = 0;
         const ingresosPorMes = {}; 
 
+        // 3. MATEMÁTICAS A PRUEBA DE FALLOS (Evita que datos null rompan la app)
         pedidos.forEach(p => {
             if (p.estado !== 'CANCELADO') {
-                ingresosTotales += p.total;
+                ingresosTotales += (p.total || 0); // Si el total es null, suma 0
                 pedidosCompletados++;
                 totalPrendas += p.items ? p.items.length : 0;
 
-                // Extraer Año-Mes (Ej: "2026-06") para el gráfico real
+                let mesClave = 'Sin Fecha';
                 if (p.fechaServicio) {
                     const fecha = new Date(p.fechaServicio);
-                    // Ajuste de zona horaria para evitar desfaces en los días
-                    const mesClave = `${fecha.getUTCFullYear()}-${String(fecha.getUTCMonth() + 1).padStart(2, '0')}`;
-                    ingresosPorMes[mesClave] = (ingresosPorMes[mesClave] || 0) + p.total;
+                    // Blindaje: Solo procesar si la fecha es realmente válida en JavaScript
+                    if (!isNaN(fecha.getTime())) { 
+                        mesClave = `${fecha.getUTCFullYear()}-${String(fecha.getUTCMonth() + 1).padStart(2, '0')}`;
+                    }
                 }
+                ingresosPorMes[mesClave] = (ingresosPorMes[mesClave] || 0) + (p.total || 0);
             } else {
                 pedidosCancelados++;
             }
         });
 
-        // Cálculos Matemáticos Automáticos
-        const gastosEstimados = ingresosTotales * 0.65; // Ratio 65% gastos
+        const gastosEstimados = ingresosTotales * 0.65;
         const beneficioNeto = ingresosTotales - gastosEstimados;
         const ticketPromedio = pedidosCompletados > 0 ? (ingresosTotales / pedidosCompletados) : 0;
         const totalPedidos = pedidos.length;
@@ -258,7 +261,6 @@ async function cargarIngresos() {
         const totalClientes = clientes.length;
         const prendasPorPedido = pedidosCompletados > 0 ? (totalPrendas / pedidosCompletados) : 0;
 
-        // Encontrar el mes más rentable
         let mesTop = 'N/A';
         let maxIngreso = 0;
         for (const [mes, monto] of Object.entries(ingresosPorMes)) {
@@ -268,34 +270,30 @@ async function cargarIngresos() {
             }
         }
 
-        // 1. ACTUALIZAR TARJETAS SUPERIORES (KPIs)
-        const kpiIng = document.getElementById('kpi-ingresos');
-        const kpiGas = document.getElementById('kpi-gastos');
-        const kpiCli = document.getElementById('kpi-clientes');
-        const kpiNet = document.getElementById('kpi-neto');
+        // 4. INYECCIÓN AL DOM (KPIs)
+        kpiIng.innerText = `S/ ${ingresosTotales.toFixed(2)}`;
+        document.getElementById('kpi-gastos').innerText = `S/ ${gastosEstimados.toFixed(2)}`;
+        document.getElementById('kpi-clientes').innerText = totalClientes;
+        document.getElementById('kpi-neto').innerText = `S/ ${beneficioNeto.toFixed(2)}`;
 
-        if(kpiIng) kpiIng.innerText = `S/ ${ingresosTotales.toFixed(2)}`;
-        if(kpiGas) kpiGas.innerText = `S/ ${gastosEstimados.toFixed(2)}`;
-        if(kpiCli) kpiCli.innerText = totalClientes;
-        if(kpiNet) kpiNet.innerText = `S/ ${beneficioNeto.toFixed(2)}`;
-
-        // 2. DIBUJAR GRÁFICO DINÁMICO (Solo meses con datos reales)
+        // 5. INYECCIÓN DEL GRÁFICO 
         const chartContainer = document.getElementById('dynamic-chart');
         if(chartContainer) {
             chartContainer.innerHTML = '';
-            const maxMontoMensual = Math.max(...Object.values(ingresosPorMes), 1); // Evitar div/0
+            const maxMontoMensual = Math.max(...Object.values(ingresosPorMes), 1); 
 
             Object.keys(ingresosPorMes).sort().forEach(mesStr => {
                 const ingresoMensual = ingresosPorMes[mesStr];
                 const gastoMensual = ingresoMensual * 0.65;
-                
-                // Altura relativa al mes top para mantener el gráfico proporcionado
                 const alturaIngreso = (ingresoMensual / maxMontoMensual) * 100;
                 const alturaGasto = (gastoMensual / maxMontoMensual) * 100;
                 
-                // Formatear etiqueta (Ej: "Jun '26")
-                const [y, m] = mesStr.split('-');
-                const mesNombre = new Date(y, m - 1).toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+                let mesNombre = mesStr;
+                // Blindaje extra para evitar RangeError al convertir la fecha
+                if (mesStr.includes('-')) {
+                    const [y, m] = mesStr.split('-');
+                    mesNombre = new Date(y, m - 1).toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+                }
 
                 chartContainer.innerHTML += `
                     <div class="bar-group">
@@ -311,7 +309,7 @@ async function cargarIngresos() {
             });
         }
 
-        // 3. INYECTAR LAS 10 MÉTRICAS (Divididas en dos tablas)
+        // 6. INYECCIÓN DE TABLAS
         const metricsFin = document.getElementById('metrics-finanzas');
         if(metricsFin) metricsFin.innerHTML = `
             <tr><td><strong>Ingresos Brutos Históricos</strong></td><td>S/ ${ingresosTotales.toFixed(2)}</td></tr>
@@ -330,8 +328,17 @@ async function cargarIngresos() {
             <tr><td><strong>Adquisición de Clientes</strong></td><td>${totalClientes} usuarios registrados</td></tr>
         `;
 
-    } catch(e) { 
-        console.error("Error al procesar ingresos del dashboard:", e); 
+    } catch(error) { 
+        console.error("Fallo crítico en el dashboard de ingresos:", error); 
+        // 7. RESPUESTA VISUAL DE ERROR (Para no dejar la pantalla congelada)
+        const chartContainer = document.getElementById('dynamic-chart');
+        if(chartContainer) {
+            chartContainer.innerHTML = `
+                <div style="width:100%; padding: 2rem; color: #dc2626; text-align:center; background:#fee2e2; border-radius:8px;">
+                    <strong>Error de conexión o de datos:</strong> ${error.message}
+                </div>
+            `;
+        }
     }
 }
 
